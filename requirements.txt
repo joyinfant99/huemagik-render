@@ -1,6 +1,6 @@
-Flask==2.0.1
-Flask-CORS==3.0.10
-Pillow==8.3.1
-numpy==1.21.1
-scikit-learn==0.24.2
-gunicorn==20.1.0
+Flask
+Flask-CORS
+Pillow
+numpy
+scikit-learn
+gunicorn
