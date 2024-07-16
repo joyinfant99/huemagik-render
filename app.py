@@ -1,6 +1,6 @@
 import os
 import logging
-from flask import Flask, request, jsonify, redirect
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 from PIL import Image
 import numpy as np
@@ -17,7 +17,7 @@ app = Flask(__name__)
 
 # Configure CORS
 CORS(app, resources={r"/*": {
-    "origins": ["http://huemagik.com", "https://huemagik-frontend.onrender.com", "https://joyinfant99.github.io", 
+    "origins": ["http://huemagik.com", "https://huemagik.com", "https://huemagik-frontend.onrender.com", "https://joyinfant99.github.io", 
                 "http://localhost:3000"],
     "methods": ["GET", "POST", "OPTIONS"],
     "allow_headers": ["Content-Type", "Authorization"],
@@ -48,6 +48,7 @@ def process_image():
         return '', 204
     try:
         if 'image' not in request.files:
+            logger.warning("No image file provided in the request")
             return jsonify({'error': 'No image file provided'}), 400
         
         image_file = request.files['image']
@@ -59,6 +60,7 @@ def process_image():
         colors = get_colors(image, number_of_colors)
         
         if colors is None:
+            logger.error("Failed to process image")
             return jsonify({'error': 'Failed to process image'}), 500
         
         logger.info(f"Processed colors: {colors}")
@@ -70,18 +72,22 @@ def process_image():
 
 @app.route('/')
 def home():
+    logger.info("Home route accessed")
     return "HueMagik Backend is running successfully!"
 
 @app.route('/test', methods=['GET'])
 def test():
+    logger.info("Test route accessed")
     return jsonify({'message': 'HueMagik Backend is working!'}), 200
 
 @app.route('/<path:path>')
 def catch_all(path):
+    logger.warning(f"Undefined route accessed: /{path}")
     return jsonify({'error': f'Undefined route: /{path}'}), 404
 
 @app.errorhandler(404)
 def not_found_error(error):
+    logger.warning(f"404 Error: {error}")
     return jsonify({'error': 'Not Found'}), 404
 
 @app.errorhandler(500)
@@ -92,4 +98,5 @@ def internal_error(error):
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 10000))
+    logger.info(f"Starting server on port {port}")
     app.run(host='0.0.0.0', port=port)
