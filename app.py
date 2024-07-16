@@ -17,8 +17,7 @@ app = Flask(__name__)
 
 # Configure CORS
 CORS(app, resources={r"/*": {
-    "origins": ["http://skillmagik.com", "https://skillmagik.com", "https://www.skillmagik.com", 
-                "https://huemagik-frontend.onrender.com", "https://joyinfant99.github.io", 
+    "origins": ["http://huemagik.com", "https://huemagik-frontend.onrender.com", "https://joyinfant99.github.io", 
                 "http://localhost:3000"],
     "methods": ["GET", "POST", "OPTIONS"],
     "allow_headers": ["Content-Type", "Authorization"],
