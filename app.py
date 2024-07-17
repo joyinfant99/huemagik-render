@@ -69,6 +69,10 @@ def process_image():
         logger.error(f"Error in process_image: {str(e)}")
         logger.error(traceback.format_exc())
         return jsonify({'error': f'An error occurred: {str(e)}'}), 500
+    
+@app.route('/wake-up')
+def wake_up():
+    return jsonify({"status": "I'm awake!"}), 200
 
 @app.route('/')
 def home():
